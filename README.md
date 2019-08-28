@@ -6,6 +6,8 @@ Install with ```devtools::install_github("jscavetta95/maxentools")```
 ## Example
 ### Using maxentools to train, evaluate, and produce a species distribtuion model. Also includes niche overlap evaluation.
 
+The data for this example is available in the ./data/ folder. Please be sure to unzip the .asc files in the layers folder.
+
 First, load in the required data. This includes a shape file and environmental layers.
 ```{r load, eval = FALSE}
 library(maxentools)
