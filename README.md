@@ -19,7 +19,7 @@ predictors <- raster::stack(list.files("./data/layers", pattern = '\\.asc$', ful
 
 Next, we want to load in our occurrence coordinates for each species. We also want the coordinates to be matched with the environmental data at that point. To do this, we can use the loadOccurrencePoints function. Note, we must specify which if any of our environmental layers are categorical.
 ```{r occurrence, eval = FALSE}
-occurrence_data_list <- loadOccurrencePoints(occurrence_folder = "./data/occurrence/", predictors = predictors, categoricals = c(1))
+occurrence_data_list <- loadOccurrencePoints(occurrence_folder = "./data/occurrences/", predictors = predictors, categoricals = c(1))
 ```
 
 Now, we need to have background (pseudo-absence) points for our models. However, we wish to control for potential sampling bias in our data, so we generate a sampling bias map. This will be a layer of probablities for sampling a background point, such that background points have a higher chance of being sampled near occurrence points. We can use all of our species occurrences to generate a the bias map.
