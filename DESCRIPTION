@@ -1,0 +1,14 @@
+Package: maxentools
+Type: Package
+Title: Species Distribution Modeling with Maxent
+Description: A set of high level functions to provide easy training and evaluation of Maxent species distribution models.
+Version: 0.1.0
+Date: 2019-08-28
+Imports: rJava, raster, data.table, dismo, prettymapr, dplyr, doSNOW, parallel, ENMeval, MASS, rgdal, sp
+Author: Joseph Scavetta
+License: GPL (>= 3)
+LazyData: true
+Encoding: UTF-8
+RoxygenNote: 6.1.1
+Suggests: knitr, rmarkdown
+VignetteBuilder: knitr
