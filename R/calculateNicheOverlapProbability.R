@@ -1,3 +1,41 @@
+#' Generate subsample Moran's I values for niche overlap given two species occurrence data.
+#'
+#' @param species_models A list of species lists where each contains a path, predictive_map, occurrence_data, and args element.
+#' @param background_data Dataframe of selected background coordinates and extracted environmental predictor data.
+#' @param predictors A RasterStack of RasterLayer objects representing the environmental predictors.
+#' @param iterations Number of random replicates to run for each species combination.
+#' @return A dataframe containing the species combination, the real Moran's I, all replicate Moran's I values, and a P value.
+#' @export
+calculateNicheOverlapProbability <- function(species_models, background_data, predictors, iterations) {
+  comparisons <- combn(best_species_models, 2)
+  results <- setNames(data.frame(matrix(ncol = 4+iterations, nrow = ncol(comparisons))),
+                      c("species_1", "species_2", "real_I", paste0("pseudo_I_", seq(1,iterations)), "p_value"))
+  
+  foreach(i = 1:ncol(comparisons)) %do% {
+    species1 <- comparisons[[1, i]]
+    species2 <- comparisons[[2, i]]
+    
+    results$species_1[i] <- species1$path
+    results$species_2[i] <- species2$path
+    
+    results$real_I[i] <- dismo::nicheOverlap(species1$predictive_map, species2$predictive_map)
+    
+    pseudo_scores <- subsampleNicheOverlap(species1$occurrence_data[, -(1:2)], species1$args,
+                                           species2$occurrence_data[, -(1:2)], species2$args,
+                                           background_data[, -(1:2)], predictors, iterations)
+    j <- 4
+    for(pseudo in pseudo_scores)
+    {
+      results[i,j] <- pseudo
+      j = j + 1
+    }
+    
+    results$p_value[i] <- 1 - mean(pseudo_scores > results$real_I[i])
+  }
+  
+  return(results)
+}
+
 #' Generate subsample values for niche overlap given two species occurrence data.
 #'
 #' @param occurrence_data1 An occurrence dataframe containing cooridnates and environmental data at each coordinate.
