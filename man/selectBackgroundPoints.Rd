@@ -11,7 +11,7 @@ selectBackgroundPoints(sample_layer, occurrence_data_list, predictors,
 \arguments{
 \item{sample_layer}{A layer with the extent from which to randomly select background points.}
 
-\item{occurrence_data_list}{A list of occurrence point dataframes for each species sampled. This ensures background points will not be selected in the same positions.}
+\item{occurrence_data_list}{A list of occurrence point dataframes for each species sampled. Only required for plotting.}
 
 \item{predictors}{A RasterStack of RasterLayer objects representing the environmental predictors.}
 

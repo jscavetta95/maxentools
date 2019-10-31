@@ -5,7 +5,7 @@
 #' environmental data for each environmental predictor provided.
 #'
 #' @param sample_layer A layer with the extent from which to randomly select background points.
-#' @param occurrence_data_list A list of occurrence point dataframes for each species sampled. This ensures background points will not be selected in the same positions.
+#' @param occurrence_data_list A list of occurrence point dataframes for each species sampled. Only required for plotting.
 #' @param predictors A RasterStack of RasterLayer objects representing the environmental predictors.
 #' @param categoricals A vector of indecies specifying the environmental predictors that contain catagorical or discrete data.
 #' @param num_background_points The number of background points to select.
@@ -15,8 +15,7 @@
 #' @return Dataframe of selected background coordinates and extracted environmental predictor data.
 #' @export
 selectBackgroundPoints <- function(sample_layer, occurrence_data_list, predictors, categoricals, num_background_points, use_probabilty, shape, output_folder) {
-  combined_occurrence_data <- data.table::rbindlist(occurrence_data_list)[, 1:2]
-  background_points <- dismo::randomPoints(sample_layer, num_background_points, combined_occurrence_data, prob = use_probabilty)
+  background_points <- dismo::randomPoints(sample_layer, num_background_points, prob = use_probabilty)
   background_data <- na.omit(cbind(background_points, as.data.frame(raster::extract(predictors, background_points))))
   for (i in categoricals) {
     background_data[, i + 2] <- as.factor(background_data[, i + 2])
@@ -24,6 +23,7 @@ selectBackgroundPoints <- function(sample_layer, occurrence_data_list, predictor
 
   colnames(background_data)[1:2] <- c("longitude", "latitude")
 
+  combined_occurrence_data <- data.table::rbindlist(occurrence_data_list)[, 1:2]
   .create_points_map(combined_occurrence_data, background_data[, 1:2], shape, output_folder)
   write.csv(background_data, paste0(output_folder, "background_data.csv"), row.names = FALSE)
 
