@@ -54,10 +54,10 @@ trainMaxentModels <- function(occurrence_data, background_data, predictors, fact
 
   predictor_out <- .getTestGainAndResponse(occurrence_data[, -(1:2)], background_data[, -(1:2)], args)
 
-  save(full_models, file = paste0(output_folder, "models.RData"))
-  write.csv(stats, paste0(output_folder, "stats.csv"), row.names = FALSE)
-  write.csv(predictor_out$test_gain, paste0(output_folder, "test_gain.csv"))
-  write.csv(predictor_out$response_curve, paste0(output_folder, "response_curve.csv"), row.names = FALSE)
+  save(full_models, file = paste0(output_folder, "/models.RData"))
+  write.csv(stats, paste0(output_folder, "/stats.csv"), row.names = FALSE)
+  write.csv(predictor_out$test_gain, paste0(output_folder, "/test_gain.csv"))
+  write.csv(predictor_out$response_curve, paste0(output_folder, "/response_curve.csv"), row.names = FALSE)
 
   return(list(
     best_model = best_model, occurrence_data = occurrence_data,
@@ -99,7 +99,7 @@ trainMaxentModels <- function(occurrence_data, background_data, predictors, fact
 }
 
 .plotModel <- function(predictive_map, shape, output_folder) {
-  png(paste0(output_folder, "best_model.png"), width = 1000, height = 800)
+  png(paste0(output_folder, "/best_model.png"), width = 1000, height = 800)
 
   raster::plot(predictive_map, col = viridis::viridis(256, direction = -1), axes = FALSE, frame.plot = FALSE)
   box(col = "white")
