@@ -7,19 +7,19 @@
 #' @return A dataframe containing the species combination, the real Moran's I, all replicate Moran's I values, and a P value.
 #' @export
 calculateNicheOverlapProbability <- function(species_models, background_data, predictors, iterations) {
-  comparisons <- combn(best_species_models, 2)
+  comparisons <- combn(species_models, 2)
   results <- setNames(data.frame(matrix(ncol = 4+iterations, nrow = ncol(comparisons))),
                       c("species_1", "species_2", "real_I", paste0("pseudo_I_", seq(1,iterations)), "p_value"))
-  
+
   foreach(i = 1:ncol(comparisons)) %do% {
     species1 <- comparisons[[1, i]]
     species2 <- comparisons[[2, i]]
-    
+
     results$species_1[i] <- species1$path
     results$species_2[i] <- species2$path
-    
+
     results$real_I[i] <- dismo::nicheOverlap(species1$predictive_map, species2$predictive_map)
-    
+
     pseudo_scores <- subsampleNicheOverlap(species1$occurrence_data[, -(1:2)], species1$args,
                                            species2$occurrence_data[, -(1:2)], species2$args,
                                            background_data[, -(1:2)], predictors, iterations)
@@ -29,10 +29,10 @@ calculateNicheOverlapProbability <- function(species_models, background_data, pr
       results[i,j] <- pseudo
       j = j + 1
     }
-    
+
     results$p_value[i] <- 1 - mean(pseudo_scores > results$real_I[i])
   }
-  
+
   return(results)
 }
 

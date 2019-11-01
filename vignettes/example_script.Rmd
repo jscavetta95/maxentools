@@ -61,7 +61,7 @@ Let's run our models. We will use parallel processing with a progress bar to mon
 progress_bar <- dplyr::progress_estimated(length(occurrence_data_list))
 
 require(doSNOW)
-cluster <- parallel::makeCluster(parallel::detectCores() / 2)
+cluster <- parallel::makeCluster(parallel::detectCores())
 doSNOW::registerDoSNOW(cluster)
 opts <- list(progress = function() progress_bar$tick()$print())
 
@@ -82,7 +82,7 @@ As an extra evaluation, we can use a subsampling technique to determine if two s
 predictors_aggregate <- raster::aggregate(predictors, fact=10)
 
 results <- calculateNicheOverlapProbability(species_models = best_species_models, background_data = background_data, 
-                                            predictors = predictors, iterations = 100)
+                                            predictors = predictors_aggregate, iterations = 100)
 
 write.csv(results, "./data/niche_overlap.csv", row.names = FALSE)
 ```
