@@ -45,15 +45,16 @@ calculateNicheOverlapProbability <- function(species_models, background_data, pr
 #' @param background_data Dataframe of selected background coordinates and extracted environmental predictor data.
 #' @param predictors A RasterStack of RasterLayer objects representing the environmental predictors.
 #' @param iterations Number of subsample values to generate.
+#' @param cores Number of cores to use. Defaults to a single core; specify more for multiprocessing.
 #' @return A list of subsampled niche overlap values.
 #' @export
-subsampleNicheOverlap <- function(occurrence_data1, args1, occurrence_data2, args2, background_data, predictors, iterations) {
+subsampleNicheOverlap <- function(occurrence_data1, args1, occurrence_data2, args2, background_data, predictors, iterations, cores=1) {
   combined_occurrence_data <- rbind(occurrence_data1, occurrence_data2)
 
   progress_bar <- dplyr::progress_estimated(iterations)
 
   require(doSNOW)
-  cluster <- parallel::makeCluster(parallel::detectCores())
+  cluster <- parallel::makeCluster(cores)
   doSNOW::registerDoSNOW(cluster)
   opts <- list(progress = function() progress_bar$tick()$print())
   scores <- foreach(i = 1:iterations, .options.snow = opts) %dopar% {
