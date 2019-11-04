@@ -5,7 +5,7 @@
 \title{Generate subsample Moran's I values for niche overlap given two species occurrence data.}
 \usage{
 calculateNicheOverlapProbability(species_models, background_data,
-  predictors, iterations)
+  predictors, iterations, cores = 1)
 }
 \arguments{
 \item{species_models}{A list of species lists where each contains a path, predictive_map, occurrence_data, and args element.}
@@ -15,6 +15,8 @@ calculateNicheOverlapProbability(species_models, background_data,
 \item{predictors}{A RasterStack of RasterLayer objects representing the environmental predictors.}
 
 \item{iterations}{Number of random replicates to run for each species combination.}
+
+\item{cores}{Number of cores to use. Defaults to a single core; specify more for multiprocessing.}
 }
 \value{
 A dataframe containing the species combination, the real Moran's I, all replicate Moran's I values, and a P value.

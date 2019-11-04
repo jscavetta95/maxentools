@@ -5,7 +5,7 @@
 \title{Generate subsample values for niche overlap given two species occurrence data.}
 \usage{
 subsampleNicheOverlap(occurrence_data1, args1, occurrence_data2, args2,
-  background_data, predictors, iterations, cores = 1)
+  background_data, predictors, iterations, cores)
 }
 \arguments{
 \item{occurrence_data1}{An occurrence dataframe containing cooridnates and environmental data at each coordinate.}
@@ -22,7 +22,7 @@ subsampleNicheOverlap(occurrence_data1, args1, occurrence_data2, args2,
 
 \item{iterations}{Number of subsample values to generate.}
 
-\item{cores}{Number of cores to use. Defaults to a single core; specify more for multiprocessing.}
+\item{cores}{Number of cores to use.}
 }
 \value{
 A list of subsampled niche overlap values.

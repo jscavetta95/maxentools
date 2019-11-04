@@ -4,9 +4,10 @@
 #' @param background_data Dataframe of selected background coordinates and extracted environmental predictor data.
 #' @param predictors A RasterStack of RasterLayer objects representing the environmental predictors.
 #' @param iterations Number of random replicates to run for each species combination.
+#' @param cores Number of cores to use. Defaults to a single core; specify more for multiprocessing.
 #' @return A dataframe containing the species combination, the real Moran's I, all replicate Moran's I values, and a P value.
 #' @export
-calculateNicheOverlapProbability <- function(species_models, background_data, predictors, iterations) {
+calculateNicheOverlapProbability <- function(species_models, background_data, predictors, iterations, cores=1) {
   comparisons <- combn(species_models, 2)
   results <- setNames(data.frame(matrix(ncol = 4+iterations, nrow = ncol(comparisons))),
                       c("species_1", "species_2", "real_I", paste0("pseudo_I_", seq(1,iterations)), "p_value"))
@@ -22,7 +23,8 @@ calculateNicheOverlapProbability <- function(species_models, background_data, pr
 
     pseudo_scores <- subsampleNicheOverlap(species1$occurrence_data[, -(1:2)], species1$args,
                                            species2$occurrence_data[, -(1:2)], species2$args,
-                                           background_data[, -(1:2)], predictors, iterations)
+                                           background_data[, -(1:2)], predictors, iterations,
+                                           cores)
     j <- 4
     for(pseudo in pseudo_scores)
     {
@@ -45,10 +47,10 @@ calculateNicheOverlapProbability <- function(species_models, background_data, pr
 #' @param background_data Dataframe of selected background coordinates and extracted environmental predictor data.
 #' @param predictors A RasterStack of RasterLayer objects representing the environmental predictors.
 #' @param iterations Number of subsample values to generate.
-#' @param cores Number of cores to use. Defaults to a single core; specify more for multiprocessing.
+#' @param cores Number of cores to use.
 #' @return A list of subsampled niche overlap values.
 #' @export
-subsampleNicheOverlap <- function(occurrence_data1, args1, occurrence_data2, args2, background_data, predictors, iterations, cores=1) {
+subsampleNicheOverlap <- function(occurrence_data1, args1, occurrence_data2, args2, background_data, predictors, iterations, cores) {
   combined_occurrence_data <- rbind(occurrence_data1, occurrence_data2)
 
   progress_bar <- dplyr::progress_estimated(iterations)
