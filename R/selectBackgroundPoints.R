@@ -31,13 +31,13 @@ selectBackgroundPoints <- function(sample_layer, occurrence_data_list, predictor
 }
 
 .create_points_map <- function(occurence_data, background_data, shape, output_folder) {
-  png(paste0(output_folder, "data_points.png"), width = 1000, height = 800)
+  png(paste0(output_folder, "data_points.png"), width = 171, height = 150, units = "mm", res = 600)
 
   raster::plot(shape, border = "black")
-  points(background_data, col = "navy", pch = 19, cex = 0.5)
-  points(occurence_data, col = "orangered", pch = 15, cex = 0.5)
+  points(background_data, col = "navy", pch = 19, cex = 0.25)
+  points(occurence_data, col = "orangered", pch = 15, cex = 0.25)
   prettymapr::addscalebar()
-  prettymapr::addnortharrow("bottomleft", padin = c(1.1, 0.6), scale = 1.25)
+  prettymapr::addnortharrow("bottomleft", padin = c(0.4, 0.4), scale = 1)
 
   dev.off()
 }

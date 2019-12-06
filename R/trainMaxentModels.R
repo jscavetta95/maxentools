@@ -99,13 +99,13 @@ trainMaxentModels <- function(occurrence_data, background_data, predictors, fact
 }
 
 .plotModel <- function(predictive_map, shape, output_folder) {
-  png(paste0(output_folder, "/best_model.png"), width = 1000, height = 800)
+  png(paste0(output_folder, "/best_model.png"), width = 171, height = 150, units = "mm", res = 600)
 
   raster::plot(predictive_map, col = viridis::viridis(256, direction = -1), axes = FALSE, frame.plot = FALSE)
   box(col = "white")
   raster::plot(shape, border = "black", add = TRUE)
   prettymapr::addscalebar()
-  prettymapr::addnortharrow("bottomleft", padin = c(1.1, 0.6), scale = 1.25)
+  prettymapr::addnortharrow("bottomleft", padin = c(0.4, 0.4), scale = 1)
 
   dev.off()
 }

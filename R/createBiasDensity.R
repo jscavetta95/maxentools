@@ -49,13 +49,13 @@ createBiasDensity <- function(predictors, occurrence_points_list, scale, shape, 
 }
 
 .create_bias_map <- function(bias_density, shape, output_folder) {
-  png(paste0(output_folder, "bias_density.png"), width = 1000, height = 800)
+  png(paste0(output_folder, "bias_density.png"), width = 171, height = 150, units = "mm", res = 600)
 
   raster::plot(bias_density, col = viridis::viridis(256, direction = -1), axes = FALSE, frame.plot = FALSE)
   box(col = "white")
   raster::plot(shape, border = "black", add = TRUE)
   prettymapr::addscalebar()
-  prettymapr::addnortharrow("bottomleft", padin = c(1.1, 0.6), scale = 1.25)
+  prettymapr::addnortharrow("bottomleft", padin = c(0.4, 0.4), scale = 1)
 
   dev.off()
 }
